@@ -1,0 +1,46 @@
+{
+  "Students": [
+    {
+      "PutRequest": {
+        "Item": {
+          "StudentId": {
+            "S": "CkUvxNtFWb"
+          },
+          "FirstName": {
+            "S": "Niyaz"
+          },
+          "LastName": {
+            "S": "Abbasov"
+          },
+          "Email": {
+            "S": "niyaz.abbasov@university.com"
+          },
+          "Active": {
+            "S": "true"
+          }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "StudentId": {
+            "S": "vKXGVMTLhH"
+          },
+          "FirstName": {
+            "S": "Elman"
+          },
+          "LastName": {
+            "S": "Quliyev"
+          },
+          "Email": {
+            "S": "elman.quliyev@university.com"
+          },
+          "Active": {
+            "S": "true"
+          }
+        }
+      }
+    }
+  ]
+}

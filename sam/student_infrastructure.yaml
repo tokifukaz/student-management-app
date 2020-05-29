@@ -1,0 +1,81 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: 'AWS::Serverless-2016-10-31'
+Description: 
+  Serverless infrastructure for Student Management
+
+Resources:
+
+  StudentTable:
+    Type: 'AWS::Serverless::SimpleTable'
+    Properties:
+      TableName: Students
+      PrimaryKey: 
+        Name: StudentId
+        Type: String
+  
+  SMAPI:
+    Type: 'AWS::Serverless::Api'
+    Properties:
+      EndpointConfiguration: EDGE
+      Cors:
+        AllowOrigin: "'*'"
+        AllowHeaders: "'*'"
+      StageName: prod
+      DefinitionBody:
+        swagger: 2.0
+        info:
+          title: Students
+        schemes:
+          - https
+        paths:
+            /students:
+              post:
+                produces:
+                - "application/json"
+                responses:
+                  "200":
+                    description: "200 response"
+                    schema:
+                      $ref: "#/definitions/Empty"
+                x-amazon-apigateway-integration:
+                  httpMethod: POST
+                  type: aws
+                  contentHandling: "CONVERT_TO_TEXT"
+                  uri:
+                    Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${SMLambda.Arn}/invocations
+                  responses:
+                    default:
+                      statusCode: "200"
+        definitions:
+          Empty:
+            type: "object"
+            title: "Empty Schema"
+
+  SMLambda:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      CodeUri: ../lambda_handler/
+      Handler: studentManagement.handler
+      Runtime: nodejs10.x
+      Description: Lambda for Student Management
+      Events:
+        StudentsAPI:
+          Type: Api 
+          Properties:
+            RestApiId: !Ref SMAPI
+            Path: /students
+            Method: post
+      Policies:
+       - DynamoDBCrudPolicy:
+          TableName: !Ref StudentTable 
+
+Outputs:
+  StudentManagementApiExecution:
+    Description: "API Gateway endpoint URL for Prod stage for StudentManagement function"
+    Value: !Sub "https://${SMAPI}.execute-api.${AWS::Region}.amazonaws.com/prod"
+  StudentManagementLambdadFunction:
+    Description: "StudentManagement Lambda Function ARN"
+    Value: !GetAtt SMLambda.Arn
+  SMLambdaFunctionIamRole:
+    Description: "Implicit IAM Role created for StudentManagement function"
+    Value: !GetAtt SMLambdaRole.Arn
