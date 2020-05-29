@@ -16,6 +16,6 @@ https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/s
 To deploy the infrastructure run this command: <br>
 `sam deploy --guided --template-file sam/student_infrastructure.yaml`
 
-To import dummy data after installationrun these commands: <br>
+To import dummy data after installation run these commands: <br>
 `cd dummy_data` <br>
 `aws dynamodb batch-write-item --request-items file://students.json`
