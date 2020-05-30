@@ -1,5 +1,6 @@
 # student-management-app
-Simple API using AWS Serverless Application Model (AWS SAM)
+Simple API using AWS Serverless Application Model (AWS SAM) <br>
+Medium article: https://medium.com/@niyazabbasov/how-to-build-serverless-api-using-aws-serverless-application-model-aws-sam-965d9d9410d5
 
 # backend
 The following diagram is an overview of the components in the backend, and how they interact:
